@@ -1,4 +1,4 @@
-$PSStyle.OutputRendering = [System.Management.Automation.OutputRendering]::Ansi
+# $PSStyle.OutputRendering = [System.Management.Automation.OutputRendering]::Ansi
 
 function Write-BranchName {
     try {
@@ -18,24 +18,22 @@ function Write-BranchName {
 
 function Get-CustomHourTime {
     $now = Get-Date
+
     if ($now.Hour -lt 6) {
-        # 凌晨 0~5 点：小时 +24，分钟保持两位格式
         return '{0:D2}:{1:D2}' -f ($now.Hour + 24), $now.Minute
     }
-    # 6 点及以后：正常输出 HH:mm
+
     return $now.ToString('HH:mm')
 }
 
+# in wezterm:
+# config.set_environment_variables = {
+#     WEZ = "true"
+# }
 function Test-IsWezTerm {
-    # 1. 优先走环境变量，速度快、官方标准
-    if ($env:WEZTERM_EXECUTABLE) { return $true }
-    # 2. 兜底父进程检测
-    try {
-        $parentProc = Get-Process -Id (Get-Process -Id $PID).ParentId -ErrorAction Stop
-        return $parentProc.ProcessName -in 'wezterm-gui', 'wezterm'
-    } catch {
-        return $false
-    }
+    # if ($env:WEZ) { return $true }
+
+    return $false
 }
 
 function prompt {
@@ -86,4 +84,9 @@ function unproxy {
 
 if (Test-IsWezTerm) {
     fastfetch
+} else {
+    Write-Host ""
+    Write-Host "        " -NoNewLine 
+    D:\bin\hitokoto
+    Write-Host ""
 }
