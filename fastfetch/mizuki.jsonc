@@ -4,6 +4,7 @@
         "source": "C:/Users/17811/.config/fastfetch/images/mizuki.jpg",
         "type": "iterm",
         "width": 20,
+        "preserveAspectRatio": true,
         "padding": {
             "top": 3,
             "left": 6,
@@ -18,47 +19,69 @@
         "break",
         {
             "type": "title",
-            "keyWidth": 10
+            "keyWidth": 10,
+            "color": {
+                "user": "38;2;221;170;204",
+                "host": "38;2;136;68;153"
+            }
         },
         "break",
-        {
-            "type": "os",
-            "key": "OS  ",
-            "keyColor": "38;2;221;170;204",
-        },
-        {
-            "type": "kernel",
-            "key": "KER ",
-            "keyColor": "38;2;221;170;204",
-        },
-        {
-            "type": "terminal",
-            "key": "TER ",
-            "keyColor": "38;2;221;170;204", 
-        },
-        {
-            "type": "shell",
-            "key": "SH  ",
-            "keyColor": "38;2;221;170;204", 
-        },
-        {
-            "type": "wm",
-            "key": "WM  ",
-            "keyColor": "38;2;221;170;204", 
-        },
         {
             "type": "uptime",
             "key": "UP  ",
-            "keyColor": "38;2;221;170;204", 
+            "keyColor": "38;2;221;170;204"
+        },
+        {
+            "type": "cpuusage",
+            "key": "CPU ",
+            "keyColor": "38;2;221;170;204",
+            "format": "{max} on core #{max-index}"
         },
         {
             "type": "memory",
-            "key": "MEM ",
-            "keyColor": "38;2;221;170;204", 
+            "key": "RAM ",
+            "keyColor": "38;2;221;170;204",
             "format": "{used} / {total}"
         },
+        {
+            "type": "disk",
+            "key": "ROM ",
+            "keyColor": "38;2;221;170;204",
+            "folders": "C:\\",
+            "format": "{##ccaa88}C:\\{#0} - {size-used} / {size-total}"
+        },
+        {
+            "type": "disk",
+            "key": "    ",
+            "keyColor": "38;2;221;170;204",
+            "folders": "D:\\",
+            "format": "{##ccaa88}D:\\{#0} - {size-used} / {size-total}"
+        },
+        {
+            "type": "disk",
+            "key": "    ",
+            "keyColor": "38;2;221;170;204",
+            "folders": "E:\\",
+            "format": "{##ccaa88}E:\\{#0} - {size-used} / {size-total}"
+        },
+        {
+            "type": "disk",
+            "key": "    ",
+            "keyColor": "38;2;221;170;204",
+            "folders": "F:\\",
+            "format": "{##ccaa88}F:\\{#0} - {size-used} / {size-total}"
+        },
         "break",
+        {
+            "type": "media",
+            "key": "♪  ",
+            "keyColor": "38;2;221;170;204",
+            "format": "{combined} - {artist} [{status}]",
+            "percent": {
+                "type": 2
+            }
+        },
         "break",
-        "break",
+        "break"
     ]
 }
