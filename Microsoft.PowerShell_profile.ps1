@@ -6,7 +6,12 @@ function Write-BranchName {
 
         if ($branch -eq "HEAD") {
             $branch = git rev-parse --short HEAD
-            Write-Host "($branch) " -ForegroundColor "red" -NoNewLine
+            if ([string]::IsNullOrWhiteSpace($branch)) {
+				Write-Host "(???) " -ForegroundColor "red" -NoNewLine
+			}
+			else {
+				Write-Host "($branch) " -ForegroundColor "red" -NoNewLine
+			}
         }
         else {
             Write-Host "($branch) " -ForegroundColor "cyan" -NoNewLine
@@ -26,18 +31,25 @@ function Get-CustomHourTime {
     return $now.ToString('HH:mm')
 }
 
-# in wezterm:
-# config.set_environment_variables = {
-#     WEZ = "true"
-# }
-function Test-IsWezTerm {
-    # if ($env:WEZ) { return $true }
-
-    return $false
-}
-
 function prompt {
-    $statusIndicator = $(if ($?) { " " } else { " x_x " })
+    $exitStatus = $?
+
+    if ($null -eq $LASTEXITCODE) {
+        $savedExitCode = 0
+    } else {
+        $savedExitCode = $LASTEXITCODE
+    }
+
+    $statusIndicator = if (-not $exitStatus) {
+        if ($savedExitCode -ne 0) {
+            " $savedExitCode "
+        } else {
+            ” x_x "
+        }
+    } else {
+        " "
+    }
+
     $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
     $isAdmin = $($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))
     $location = $(Get-Location).ToString().Replace($home, "~")
@@ -63,11 +75,10 @@ function prompt {
 
     Write-Host -ForegroundColor blue $(if ($isAdmin) { "#" } else { "$" }) -NoNewLine
 
+    $global:LASTEXITCODE = $savedExitCode
+
     return $userPrompt   
 }
-
-fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
-Import-Module 'gsudoModule'
 
 function proxy {
     $env:HTTP_PROXY='http://127.0.0.1:7897'
@@ -80,13 +91,4 @@ function unproxy {
     Remove-Item Env:HTTP_PROXY -ErrorAction SilentlyContinue
     Remove-Item Env:HTTPS_PROXY -ErrorAction SilentlyContinue
     Write-Host "proxy detached" -ForegroundColor Red
-}
-
-if (Test-IsWezTerm) {
-    fastfetch
-} else {
-    Write-Host ""
-    Write-Host "        " -NoNewLine 
-    D:\bin\hitokoto
-    Write-Host ""
 }
